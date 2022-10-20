@@ -1,13 +1,17 @@
-import { createSignal, onCleanup } from 'solid-js';
+import { ExampleSubscribe } from './example-subscribe';
+import { useExampleCommand } from '../commands/example.command';
 
 export const Example = () => {
-  const [count, setCount] = createSignal(0);
-  const timer = setInterval(() => setCount(count() + 1), 1500);
-  onCleanup(() => clearInterval(timer));
+  const { execute } = useExampleCommand();
+
+  async function onChangeHandler() {
+    await execute({ name: this.value });
+  }
 
   return (
     <div>
-      <div>${count}</div>
+      <input type="text" onchange={onChangeHandler} value="test" />
+      <ExampleSubscribe />
     </div>
   );
 };
